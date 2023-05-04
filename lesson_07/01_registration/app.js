@@ -20,14 +20,20 @@ app.use('/api/books', booksRouter)
 app.use('/api/auth', authRouter)
 
 app.use((req, res) => {
-  res.status(404).json({ mesaage: 'Not found' })
+  res.status(404).json({ message: 'Not found' })
 })
 
 app.use((err, req, res, next) => {
-  if (err.message.includes('Cast to ObjectId failed for value')) {
-    return res.status(400).json({
-      message: 'ID is invalid',
-    })
+  if (err.message.includes('E11000 duplicate key error')) {
+    res.status(409).json({ message: 'Already exist' })
+  }
+
+  if (err.message.includes('Cast to ObjectId failed')) {
+    res.status(400).json({ message: 'ID is not valid' })
+  }
+
+  if (err.name === 'ValidationError') {
+    res.status(400).json({ message: err.message })
   }
 
   const { status = 500, message = 'Server error' } = err
