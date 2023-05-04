@@ -4,9 +4,8 @@ const { JWT_SECRET } = process.env
 const User = require('../models/user')
 
 const auth = async (req, res, next) => {
-  // const authHeader = req.headers // 1 подивитись на всі хедери
-  const authHeader = req.headers.authorization || '' // 2 витягнути наш токен
-  const [type, token] = authHeader.split(' ') // розділяємо строку по ' '
+  const authHeader = req.headers.authorization || ''
+  const [type, token] = authHeader.split(' ')
 
   if (type !== 'Bearer') {
     throw RequestError(401, 'Token type is not valid!')
