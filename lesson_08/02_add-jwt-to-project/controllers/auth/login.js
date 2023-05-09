@@ -1,9 +1,6 @@
 const User = require('../../models/user')
-const { RequestError } = require('../../helpers')
+const { RequestError, authHelper } = require('../../helpers')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-
-const { JWT_SECRET } = process.env
 
 const login = async (req, res) => {
   const { email, password } = req.body
@@ -17,11 +14,8 @@ const login = async (req, res) => {
     throw RequestError(401, 'Password is not valid')
   }
 
-  const token = jwt.sign({ id: user._id }, JWT_SECRET, {
-    expiresIn: '1h',
-  })
-
-  res.json({ token: token })
+  const tokens = await authHelper.updateTokens(user._id)
+  return res.json(tokens)
 }
 
 module.exports = login

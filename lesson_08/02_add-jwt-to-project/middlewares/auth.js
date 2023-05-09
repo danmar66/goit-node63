@@ -16,17 +16,20 @@ const auth = async (req, res, next) => {
   }
 
   try {
-    const { id } = jwt.verify(token, JWT_SECRET) // витягуємо id із токена
-    const user = await User.findById(id) // шукаємо юзера в базі данних
-    req.user = user // додаємо до request нашого юзера
-  } catch (error) {
-    if (
-      error.name === 'TokenExpiredError' ||
-      error.name === 'JsonWebTokenError'
-    ) {
-      throw RequestError(401, 'JWT token is not valid')
+    const payload = jwt.verify(token, JWT_SECRET)
+    if (payload.type !== 'access') {
+      return res.status(401).json({ message: 'Invalid token' })
     }
-    throw error
+    console.log('lets go dali')
+    const user = await User.findById(payload.userId)
+    req.user = user
+  } catch (error) {
+    if (error instanceof jwt.TokenExpiredError) {
+      throw RequestError(401, 'Token expired')
+    }
+    if (error instanceof jwt.JsonWebTokenError) {
+      throw RequestError(401, 'Invalid token')
+    }
   }
 
   next()
