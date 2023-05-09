@@ -1,4 +1,5 @@
 const { Schema, model, Types } = require('mongoose')
+const mongoose = require('mongoose')
 
 const schema = new Schema(
   {
@@ -12,8 +13,8 @@ const schema = new Schema(
       minLength: [6, 'password should be at least 6 characters long'],
     },
     books: {
-      type: [Types.ObjectId],
-      rel: 'book',
+      type: [Schema.Types.ObjectId],
+      ref: 'book',
     },
   },
   {

@@ -2,11 +2,13 @@ const User = require('../../models/user')
 
 const getBooks = async (req, res) => {
   const { user } = req
-  const { books } = user
 
-  const userMovies = await User.findById(user._id).populate('books')
-  console.log(userMovies)
-  return res.json({ books })
+  const userBooks = await User.findById(user._id).populate('books', {
+    title: 1,
+    author: 1,
+  })
+
+  return res.json({ books: userBooks.books })
 }
 
 module.exports = getBooks
