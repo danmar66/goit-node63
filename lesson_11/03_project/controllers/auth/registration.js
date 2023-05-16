@@ -16,13 +16,12 @@ const registration = async (req, res) => {
       email: email,
       password: hashedPassword,
       verifyToken,
-      verified: false,
     })
 
     await sendMail({
       to: email,
       subject: 'Please, confirm your email',
-      html: `<a href='http://localhost:3000/api/users/verify/${verifyToken}'> Confirm your email </a>`,
+      html: `<a href="http://localhost:3000/api/users/verify/${verifyToken}">Confirm your email</a>`,
     })
 
     res.status(201).json({ id: result._id, email: result.email })

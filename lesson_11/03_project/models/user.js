@@ -17,6 +17,7 @@ const schema = new Schema(
     },
     verified: {
       type: Boolean,
+      default: false,
     },
     verifyToken: {
       type: String,
