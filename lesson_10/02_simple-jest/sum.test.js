@@ -1,7 +1,19 @@
-const sum = require('./sum.js')
+const sum = require('./sum')
 
 describe('sum', () => {
-  test('1 + 2 should return 3', () => {
+  beforeAll(() => {
+    console.log('It run before all tests')
+  })
+
+  afterAll(() => {
+    console.log('It run after all tests')
+  })
+
+  beforeEach(() => {
+    console.log('It should run before each test')
+  })
+
+  it('1 + 2 should return 3', () => {
     const result = sum(1, 2)
     expect(result).toBe(3)
   })
@@ -12,9 +24,9 @@ describe('sum', () => {
   })
 
   describe('not a number', () => {
-    it('`1` + -2 should return -1', () => {
+    test('1 + 2 should return -1', () => {
       const result = sum('1', -2)
-      expect(result).toEqual(-1)
+      expect(result).toBe(-1)
     })
   })
 })
