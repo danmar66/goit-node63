@@ -20,7 +20,6 @@ const auth = async (req, res, next) => {
     if (payload.type !== 'access') {
       return res.status(401).json({ message: 'Invalid token' })
     }
-    console.log('lets go dali')
     const user = await User.findById(payload.userId)
     req.user = user
   } catch (error) {
